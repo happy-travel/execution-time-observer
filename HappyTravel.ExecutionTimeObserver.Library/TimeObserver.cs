@@ -19,7 +19,7 @@ namespace HappyTravel.ExecutionTimeObserver
             
             var cancellationTokenSource = new CancellationTokenSource();
             
-            Task.Run(async () =>
+            _ = Task.Run(async () =>
             {
                 await Task.Delay(notifyAfter, cancellationTokenSource.Token);
                 await notifyFunc();
