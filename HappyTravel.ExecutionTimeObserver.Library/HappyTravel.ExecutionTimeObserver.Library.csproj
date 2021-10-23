@@ -14,6 +14,8 @@
     <RepositoryURL>https://github.com/happy-travel/execution-time-observer</RepositoryURL>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Version>0.8</Version>
+    <AssemblyName>HappyTravel.ExecutionTimeObserver</AssemblyName>
+    <RootNamespace>HappyTravel.ExecutionTimeObserver</RootNamespace>
   </PropertyGroup>
 
 </Project>

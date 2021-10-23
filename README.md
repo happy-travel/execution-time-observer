@@ -3,7 +3,7 @@ Send notification if function executes longer then time
 
 ## Usage
 ```csharp
-var value = await ExecutionTimeObserverHelper.Execute(funcToExecute: () => longRunningFunction,
-    funcToNotify: notificationFunction,
+var value = await TimeObserver.Execute(observedFunc: () => longRunningFunction,
+    notifyFunc: notificationFunction,
     notifyAfter: TimeSpan.FromSeconds(1));
 ```

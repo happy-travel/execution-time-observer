@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using HappyTravel.ExecutionTimeObserver.Library;
-using HappyTravel.ExecutionTimeObserver.Library.Exceptions;
+using HappyTravel.ExecutionTimeObserver.Exceptions;
 using Moq;
 using Xunit;
 
-namespace HappyTravel.ExecutionTimeObserver._UnitTests
+namespace HappyTravel.ExecutionTimeObserver.UnitTests
 {
     public class ExecutionTimeObserverTests
     {
@@ -17,8 +16,8 @@ namespace HappyTravel.ExecutionTimeObserver._UnitTests
         {
             var longRunningFunction = LongRunningFunction(3, result);
             var notifyFunc = new Mock<Func<Task>>();
-            var value = await ExecutionTimeObserverHelper.Execute(funcToExecute: () => longRunningFunction,
-                funcToNotify: notifyFunc.Object,
+            var value = await TimeObserver.Execute(observedFunc: () => longRunningFunction,
+                notifyFunc: notifyFunc.Object,
                 notifyAfter: TimeSpan.FromSeconds(1));
             
             Assert.Equal(result, value);
@@ -36,8 +35,8 @@ namespace HappyTravel.ExecutionTimeObserver._UnitTests
             
             var longRunningFunction = LongRunningFunction(3, result);
             var notifyFunc = new Mock<Func<Task>>();
-            var value = await ExecutionTimeObserverHelper.Execute(funcToExecute: () => longRunningFunction,
-                funcToNotify: notifyFunc.Object,
+            var value = await TimeObserver.Execute(observedFunc: () => longRunningFunction,
+                notifyFunc: notifyFunc.Object,
                 notifyAfter: TimeSpan.FromSeconds(5));
             
             notifyFunc.Verify(x => x(), Times.Never);
@@ -56,8 +55,8 @@ namespace HappyTravel.ExecutionTimeObserver._UnitTests
             
             var longRunningFunction = LongRunningFunction(5, result);
             var notifyFunc = new Mock<Func<Task>>();
-            var value = await ExecutionTimeObserverHelper.Execute(funcToExecute: () => longRunningFunction,
-                funcToNotify: notifyFunc.Object,
+            var value = await TimeObserver.Execute(observedFunc: () => longRunningFunction,
+                notifyFunc: notifyFunc.Object,
                 notifyAfter: TimeSpan.FromSeconds(2));
             
             notifyFunc.Verify(x => x(), Times.Once);
@@ -69,8 +68,8 @@ namespace HappyTravel.ExecutionTimeObserver._UnitTests
         private async Task Null_observed_function_should_throws_exception()
         {
             var notifyFunc = new Mock<Func<Task>>();
-            var task = ExecutionTimeObserverHelper.Execute<Task<int>>(funcToExecute: () => null,
-                funcToNotify: notifyFunc.Object,
+            var task = TimeObserver.Execute<Task<int>>(observedFunc: () => null,
+                notifyFunc: notifyFunc.Object,
                 notifyAfter: TimeSpan.FromSeconds(2));
 
             await Assert.ThrowsAsync<NullReferenceException>(() => task);
@@ -81,8 +80,8 @@ namespace HappyTravel.ExecutionTimeObserver._UnitTests
         private async Task Null_notify_function_should_throws_exception()
         {
             var longRunningFunction = LongRunningFunction(3, 0);
-            var task = ExecutionTimeObserverHelper.Execute(funcToExecute: () => longRunningFunction,
-                funcToNotify: null,
+            var task = TimeObserver.Execute(observedFunc: () => longRunningFunction,
+                notifyFunc: null,
                 notifyAfter: TimeSpan.FromSeconds(2));
 
             await Assert.ThrowsAsync<ArgumentNullException>(() => task);
@@ -94,8 +93,8 @@ namespace HappyTravel.ExecutionTimeObserver._UnitTests
         {
             var longRunningFunction = LongRunningFunction(5, 0);
             var notifyFunc = new Mock<Func<Task>>();
-            var task = ExecutionTimeObserverHelper.Execute(funcToExecute: () => longRunningFunction,
-                funcToNotify: notifyFunc.Object,
+            var task = TimeObserver.Execute(observedFunc: () => longRunningFunction,
+                notifyFunc: notifyFunc.Object,
                 notifyAfter: TimeSpan.FromSeconds(-2));
             
             await Assert.ThrowsAsync<NegativeDelayException>(() => task);

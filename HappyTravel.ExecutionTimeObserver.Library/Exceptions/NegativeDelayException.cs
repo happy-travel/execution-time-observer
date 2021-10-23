@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HappyTravel.ExecutionTimeObserver.Library.Exceptions
+namespace HappyTravel.ExecutionTimeObserver.Exceptions
 {
     public class NegativeDelayException : Exception
     {

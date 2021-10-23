@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using HappyTravel.ExecutionTimeObserver.Library.Exceptions;
+using HappyTravel.ExecutionTimeObserver.Exceptions;
 
-namespace HappyTravel.ExecutionTimeObserver.Library
+namespace HappyTravel.ExecutionTimeObserver
 {
-    public static class ExecutionTimeObserverHelper
+    public static class TimeObserver
     {
-        public static async Task<T> Execute<T>(Func<Task<T>> funcToExecute, Func<Task> funcToNotify, TimeSpan notifyAfter)
+        public static async Task<T> Execute<T>(Func<Task<T>> observedFunc, Func<Task> notifyFunc, TimeSpan notifyAfter)
         {
-            if (funcToExecute == null || funcToNotify == null)
+            if (observedFunc == null || notifyFunc == null)
                 throw new ArgumentNullException();
 
             if (notifyAfter < TimeSpan.Zero)
@@ -20,10 +20,10 @@ namespace HappyTravel.ExecutionTimeObserver.Library
             Task.Run(async () =>
             {
                 await Task.Delay(notifyAfter, cancellationTokenSource.Token);
-                await funcToNotify();
+                await notifyFunc();
             });
             
-            var result = await funcToExecute();
+            var result = await observedFunc();
             cancellationTokenSource.Cancel();
             return result;
         }
