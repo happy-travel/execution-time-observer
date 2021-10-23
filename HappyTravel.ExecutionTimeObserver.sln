@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HappyTravel.ExecutionTimeObserver.Library", "HappyTravel.ExecutionTimeObserver.Library\HappyTravel.ExecutionTimeObserver.Library.csproj", "{76EF0BBE-6F48-4572-9490-AF52E42FA857}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HappyTravel.ExecutionTimeObserver..UnitTests", "HappyTravel.ExecutionTimeObserver..UnitTests\HappyTravel.ExecutionTimeObserver..UnitTests.csproj", "{32DC1F3B-B17E-48E3-AEF5-3F15F95EBE0E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HappyTravel.ExecutionTimeObserver.UnitTests", "HappyTravel.ExecutionTimeObserver.UnitTests\HappyTravel.ExecutionTimeObserver.UnitTests.csproj", "{32DC1F3B-B17E-48E3-AEF5-3F15F95EBE0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
