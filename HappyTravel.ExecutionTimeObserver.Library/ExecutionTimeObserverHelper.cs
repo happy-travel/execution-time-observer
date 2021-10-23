@@ -8,6 +8,12 @@ namespace HappyTravel.ExecutionTimeObserver.Library
     {
         public static async Task<T> Execute<T>(Func<Task<T>> funcToExecute, Func<Task> funcToNotify, TimeSpan notifyAfter)
         {
+            if (funcToExecute == null || funcToNotify == null)
+                throw new NullReferenceException();
+
+            if (notifyAfter < TimeSpan.Zero)
+                throw new NotSupportedException("Negative delay not supported");
+            
             var cancellationTokenSource = new CancellationTokenSource();
             
             Task.Run(async () =>
