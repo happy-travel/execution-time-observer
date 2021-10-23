@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using HappyTravel.ExecutionTimeObserver.Exceptions;
 using Moq;
 using Xunit;
 
@@ -97,7 +96,7 @@ namespace HappyTravel.ExecutionTimeObserver.UnitTests
                 notifyFunc: notifyFunc.Object,
                 notifyAfter: TimeSpan.FromSeconds(-2));
             
-            await Assert.ThrowsAsync<NegativeDelayException>(() => task);
+            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => task);
         }
 
 
