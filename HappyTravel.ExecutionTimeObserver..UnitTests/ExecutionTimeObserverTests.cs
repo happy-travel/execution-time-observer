@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using HappyTravel.ExecutionTimeObserver.Library;
+using HappyTravel.ExecutionTimeObserver.Library.Exceptions;
 using Moq;
 using Xunit;
 
@@ -84,7 +85,7 @@ namespace HappyTravel.ExecutionTimeObserver._UnitTests
                 funcToNotify: null,
                 notifyAfter: TimeSpan.FromSeconds(2));
 
-            await Assert.ThrowsAsync<NullReferenceException>(() => task);
+            await Assert.ThrowsAsync<ArgumentNullException>(() => task);
         }
 
 
@@ -97,7 +98,7 @@ namespace HappyTravel.ExecutionTimeObserver._UnitTests
                 funcToNotify: notifyFunc.Object,
                 notifyAfter: TimeSpan.FromSeconds(-2));
             
-            await Assert.ThrowsAsync<NotSupportedException>(() => task);
+            await Assert.ThrowsAsync<NegativeDelayException>(() => task);
         }
 
 

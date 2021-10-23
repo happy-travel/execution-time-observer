@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using HappyTravel.ExecutionTimeObserver.Library.Exceptions;
 
 namespace HappyTravel.ExecutionTimeObserver.Library
 {
@@ -9,10 +10,10 @@ namespace HappyTravel.ExecutionTimeObserver.Library
         public static async Task<T> Execute<T>(Func<Task<T>> funcToExecute, Func<Task> funcToNotify, TimeSpan notifyAfter)
         {
             if (funcToExecute == null || funcToNotify == null)
-                throw new NullReferenceException();
+                throw new ArgumentNullException();
 
             if (notifyAfter < TimeSpan.Zero)
-                throw new NotSupportedException("Negative delay not supported");
+                throw new NegativeDelayException("Negative delay not supported");
             
             var cancellationTokenSource = new CancellationTokenSource();
             
