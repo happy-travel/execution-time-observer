@@ -20,7 +20,7 @@ namespace HappyTravel.ExecutionTimeObserver
             var startedTickCount = Environment.TickCount;
             var result = await observedFunc();
 
-            if (TimeSpan.FromMilliseconds(Environment.TickCount - startedTickCount) > notifyAfter)
+            if (Environment.TickCount - startedTickCount > notifyAfter.TotalMilliseconds)
                 await notifyFunc();
 
             return result;
