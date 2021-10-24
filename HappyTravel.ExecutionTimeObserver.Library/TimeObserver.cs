@@ -16,22 +16,14 @@ namespace HappyTravel.ExecutionTimeObserver
 
             if (notifyAfter < TimeSpan.Zero)
                 throw new ArgumentOutOfRangeException(nameof(notifyAfter), "Delay has negative value");
-            
-            using var cancellationTokenSource = new CancellationTokenSource();
-            var cancellationToken = cancellationTokenSource.Token;
 
-            _ = Notify(notifyFunc, notifyAfter, cancellationToken);
-            
+            var startedTickCount = Environment.TickCount;
             var result = await observedFunc();
-            cancellationTokenSource.Cancel();
+
+            if (TimeSpan.FromMilliseconds(Environment.TickCount - startedTickCount) > notifyAfter)
+                await notifyFunc();
+
             return result;
-        }
-
-
-        private static async Task Notify(Func<Task> notifyFunc, TimeSpan notifyAfter, CancellationToken cancellationToken)
-        {
-            await Task.Delay(notifyAfter, cancellationToken);
-            await notifyFunc();
         }
     }
 }
