@@ -13,9 +13,8 @@ namespace HappyTravel.ExecutionTimeObserver.UnitTests
         [InlineData(10)]
         private async Task Result_should_be_equal(int result)
         {
-            var longRunningFunction = LongRunningFunction(3, result);
             var notifyFunc = new Mock<Func<Task>>();
-            var value = await TimeObserver.Execute(observedFunc: () => longRunningFunction,
+            var value = await TimeObserver.Execute(observedFunc: () => LongRunningFunction(3, result),
                 notifyFunc: notifyFunc.Object,
                 notifyAfter: TimeSpan.FromSeconds(1));
             
@@ -32,9 +31,8 @@ namespace HappyTravel.ExecutionTimeObserver.UnitTests
             if (notifyAfter > runningTime)
                 throw new Exception("Notify time should be greater than running time");
             
-            var longRunningFunction = LongRunningFunction(3, result);
             var notifyFunc = new Mock<Func<Task>>();
-            var value = await TimeObserver.Execute(observedFunc: () => longRunningFunction,
+            var value = await TimeObserver.Execute(observedFunc: () => LongRunningFunction(3, result),
                 notifyFunc: notifyFunc.Object,
                 notifyAfter: TimeSpan.FromSeconds(5));
             
@@ -52,9 +50,8 @@ namespace HappyTravel.ExecutionTimeObserver.UnitTests
             if (runningTime > notifyAfter)
                 throw new Exception("Running time should be greater than notify time");
             
-            var longRunningFunction = LongRunningFunction(5, result);
             var notifyFunc = new Mock<Func<Task>>();
-            var value = await TimeObserver.Execute(observedFunc: () => longRunningFunction,
+            var value = await TimeObserver.Execute(observedFunc: () => LongRunningFunction(5, result),
                 notifyFunc: notifyFunc.Object,
                 notifyAfter: TimeSpan.FromSeconds(2));
             
@@ -78,8 +75,7 @@ namespace HappyTravel.ExecutionTimeObserver.UnitTests
         [Fact]
         private async Task Null_notify_function_should_throws_exception()
         {
-            var longRunningFunction = LongRunningFunction(3, 0);
-            var task = TimeObserver.Execute(observedFunc: () => longRunningFunction,
+            var task = TimeObserver.Execute(observedFunc: () => LongRunningFunction(3, 0),
                 notifyFunc: null,
                 notifyAfter: TimeSpan.FromSeconds(2));
 
@@ -90,9 +86,8 @@ namespace HappyTravel.ExecutionTimeObserver.UnitTests
         [Fact]
         private async Task Negative_delay_should_throws_exception()
         {
-            var longRunningFunction = LongRunningFunction(5, 0);
             var notifyFunc = new Mock<Func<Task>>();
-            var task = TimeObserver.Execute(observedFunc: () => longRunningFunction,
+            var task = TimeObserver.Execute(observedFunc: () => LongRunningFunction(5, 0),
                 notifyFunc: notifyFunc.Object,
                 notifyAfter: TimeSpan.FromSeconds(-2));
             
@@ -100,7 +95,7 @@ namespace HappyTravel.ExecutionTimeObserver.UnitTests
         }
 
 
-        private static async Task<int> LongRunningFunction(int seconds, int result)
+        private static async Task<int> LongRunningFunction(int seconds = 0, int result= 0)
         {
             await Task.Delay(TimeSpan.FromSeconds(seconds));
             return result;
